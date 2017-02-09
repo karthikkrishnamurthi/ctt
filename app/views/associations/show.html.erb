@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Course:</strong>
+  <%= @association.course_id %>
+</p>
+
+<p>
+  <strong>Subject:</strong>
+  <%= @association.subject_id %>
+</p>
+
+<p>
+  <strong>Semester:</strong>
+  <%= @association.semester_id %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @association.location_id %>
+</p>
+
+<p>
+  <strong>Programme:</strong>
+  <%= @association.programme_id %>
+</p>
+
+<p>
+  <strong>Subject type:</strong>
+  <%= @association.subject_type_id %>
+</p>
+
+<p>
+  <strong>Course type:</strong>
+  <%= @association.course_type_id %>
+</p>
+
+<%= link_to 'Edit', edit_association_path(@association) %> |
+<%= link_to 'Back', associations_path %>

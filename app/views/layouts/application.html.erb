@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CTT</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag  'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body style="background: gray;">
+  <div id="layout" style="margin: 100px; background: white; padding: 20px; border: solid 1px;">
+    <a href="/">Home</a>
+    <%= yield %>
+  </div>
+  </body>
+</html>

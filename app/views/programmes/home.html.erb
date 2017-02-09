@@ -1,0 +1,19 @@
+<h1>Admin</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Modules</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% ActiveRecord::Base.connection.data_sources.map do |model| %>
+    <% next if model == 'ar_internal_metadata' or model == 'schema_migrations' %>
+      <tr>
+        <td><a href="<%= model %>"><%= model.capitalize.camelize %></a></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

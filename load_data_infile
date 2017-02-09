@@ -1,0 +1,3 @@
+LOAD DATA LOCAL INFILE 'courseDemo.csv' INTO TABLE courses FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' (course_code,course_name);
+
+LOAD DATA LOCAL INFILE 'course_subjects.csv' INTO TABLE course_subjects FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n' (course_id,subject_id);

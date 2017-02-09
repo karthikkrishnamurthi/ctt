@@ -1,0 +1,12 @@
+<h1>You Entered <%= @a[0].course_type.name %> </h1>
+   <% previous_course = "" %>
+    <% @a.each do |i| %>
+    
+    <% current_course = i.course.course_code %>
+    <% if current_course != previous_course then %>
+      </br></br> </br>  <b> <%= i.course.course_code %> </b></br>
+    <% end %>
+    <% previous_course = current_course %>
+    
+      <%= i.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+    <% end %>
