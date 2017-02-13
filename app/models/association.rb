@@ -6,4 +6,5 @@ class Association < ApplicationRecord
 	belongs_to :location
 	belongs_to :subject_type
 	belongs_to :course_type
+	belongs_to :subject_category
 end

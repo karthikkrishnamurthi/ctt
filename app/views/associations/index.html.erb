@@ -6,9 +6,9 @@
   <thead>
     <tr>
     <th>ID</th>
-      <th>Course</th>
-      <th>Subject</th>
-      <th>Semester</th>
+      <th>Courses</th>
+      <th>Subjects</th>
+     <th>Semester</th>
       <th>Location</th>
       <th>Programme</th>
       <th>Subject type</th>
@@ -28,8 +28,9 @@
         <td><%= association.location.name %></td>
         <td><%= association.programme.name %></td>
         <td><%= association.subject_type.name %></td>
-        <td><%= association.subject_category_id %></td>
+        <td><%= association.subject_category.name %></td>
         <td><%= association.course_type.name %></td>
+        <td><%= link_to 'Edit', edit_association_path(association) %></td>
        <!--  <td><%#= link_to 'Show', association %></td>
         <td><%#= link_to 'Edit', edit_association_path(association) %></td>
         <td><%#= link_to 'Destroy', association, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->

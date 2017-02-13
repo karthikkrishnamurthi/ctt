@@ -6,4 +6,5 @@ class SubjectType < ApplicationRecord
 	has_many	:locations, through: :associations
 	has_many	:subjects, through: :associations
 	has_many	:course_types, through: :associations
+	has_many	:subject_category, through: :associations
 end

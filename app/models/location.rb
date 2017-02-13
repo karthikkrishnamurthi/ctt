@@ -6,4 +6,5 @@ class Location < ApplicationRecord
 	has_many	:courses, through: :associations
 	has_many	:subject_types, through: :associations
 	has_many	:course_types, through: :associations
+	has_many	:subject_category, through: :associations
 end
