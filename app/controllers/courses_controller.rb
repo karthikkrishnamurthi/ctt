@@ -31,6 +31,7 @@ class CoursesController < ApplicationController
     puts "A -------> #{@a[0]}"
     
   end
+  
 
   # GET /courses/new
   def new

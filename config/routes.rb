@@ -15,4 +15,6 @@ Rails.application.routes.draw do
   get "/course_details/:id", to: "courses#details"
   get "/subjects/destroy/:id", to: "subjects#destroy"
   post "/info", to: "courses#info"
+  get "/subjects/getdate/:id", to: "subjects#getdate"
+  post "/showdate", to: "subjects#showdate"
 end

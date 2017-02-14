@@ -17,6 +17,19 @@ class SubjectsController < ApplicationController
     @subject = Subject.new
   end
 
+
+def getdate
+  
+  puts "hiii"
+  
+end
+def showdate
+  puts "hiii"
+  @endDate=Date.strptime(params[:endDate], '%Y-%m-%d')
+  @slots=params[:days].to_i
+end
+
+
   # GET /subjects/1/edit
   def edit
   end
