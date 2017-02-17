@@ -29,7 +29,6 @@ class CoursesController < ApplicationController
 
     @a = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ?", params[:programme_name],params[:course_type] ,params[:sem],1)
     puts "A -------> #{@a[0]}"
-    
   end
   
 

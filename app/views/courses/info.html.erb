@@ -1,34 +1,158 @@
-<h1>Course Name: <%= @a[0].course_type.name %> </h1>
+<h1>Course Name: <%= @a[0].course_type.name %> </h1></br>
+<b>End Date : </b><%= @endDate = params[:endDate] %>
    <% previous_course = "" %>
     <% count = 0 %>
     
 	    <% @a.each do |i| %>
-	    
+			<% eng = [] %>
+			<% lang = [] %>
+			<% elec = [] %>
+			<% core = [] %>	    
 	    	<% current_course = i.course.course_code %>
 	    	<% if current_course != previous_course then %>
 		   
-		      </br></br> </br>  <b> <%= i.course.course_code %>  <% if count != 0 then %><%= count %> <% end %> </b></br> <% @items.push(count) %><% count = 0 %>
-		      
+		      </br></br> </br>  <b> <%= i.course.course_code %>  </b></br> 
+
+		      <% eng = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =1", params[:programme_name],params[:course_type] ,params[:sem],1,i.course_id) %>
+		      <% eng.count %>
+
+
+		       <% lang = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =2", params[:programme_name],params[:course_type] ,params[:sem],1,i.course_id) %> 
+		      <% lang.count %>
+
+
+		       <% elec = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =3", params[:programme_name],params[:course_type] ,params[:sem],1,i.course_id) %> 
+		      <% elec.count %>
+		      <% core = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =4", params[:programme_name],params[:course_type] ,params[:sem],1,i.course_id) %> 
+		      <% core.count %>
+
+
+		      <% number = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ?", params[:programme_name],params[:course_type] ,params[:sem],1,i.course_id).count %>
+				
+				<% if eng.count > 0 and lang.count > 0 %>
+				<% @slots = core.count+1+1+elec.count %> 
+		      <% else %>
+		       	 <% @slots = core.count+0+0+elec.count %>
+		      <% end %>
+
+
+		      <% @items.push(@slots) %>
 		    <% end %>
-		    <% count = count + 1 %>
 			<% previous_course = current_course %>
-			<%= i.subject.subject_name %>  &nbsp&nbsp&nbsp&nbsp
-	    
-
-
-
-
+			<% eng.each do |e| %>
+			<%= e.subject.subject_name %>&nbsp&nbsp&nbsp&nbsp
+			<% end %>
+			<% lang.each do |l| %>
+			<%= l.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+			<% end %>
+			<% elec.each do |el| %>
+			<%= el.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+			<% end %>
+			<% core.each do |cr| %>
+			<%= cr.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+			<% end %>
 	    <% end %>
-		<% @items.push(count) %>
+		
 
-	    </br></br><b>Array Elements</b></br></br>
+		</br></br><b>Array Elements</b></br></br>
 	    <% @items.each do |j| %>
 	    <%= j %>
 	    <% end %></br></br>
-	     <b>Maximum Value: </b> <%= @items.max %> </br> </br> 
-	     <b>Array Length: </b><%= @items.length - 1 %> </br> </br> </br> </br> 
+	     <% @maxSlots = @items.max %> </br> </br> 
+	     <% @items.length %> </br> </br> </br> </br> 
 
-	     <b>Programs	: </b><%= @programme_id %> </br> </br> 
-	     <b>Course Types: </b><%= @course_type_id %> </br> </br> 
-	     <b>Semesters	: </b><%= @semester_id %> </br> </br> 
-	     <%= @co %>
+
+</br></br>
+</br></br>
+
+<% @endDate=Date.strptime(params[:endDate], '%Y-%m-%d') %>
+<% arr=Array[] %>
+
+
+<% d=Array[Date.strptime("2017-02-15", '%Y-%m-%d'),Date.strptime("2017-02-17", '%Y-%m-%d'),Date.strptime("2017-02-10", '%Y-%m-%d')] %>
+
+<b>HoliDays:</b> <%= d  %></br></br>
+<h1> End Date:  <%= @endDate%></h1></br></br>
+<b>Slots : </b><%= @maxSlots %> </br> </br>
+<% i=0 %>
+<% temp= @endDate %>
+<table border="1">
+<tr>
+<td align="center"><b>Course Name</b></td>
+<% begin %>
+<% if d.include? temp %>
+<% temp=temp - 1.day %>
+<% next %>
+<% end %>
+<% arr.push(temp) %>
+  <% temp = temp - 2.day %>
+  <% i +=1 %>
+<% end while i < @maxSlots %>
+<% arr.reverse.each do |j| %>
+<td align="center"><b><%= j %></b></td>
+<% end %>
+</br></br>
+</tr>
+
+ <% previous_course = "" %>
+<b>final : </b></br>
+
+<% col = 0 %>
+<% cn = @maxSlots %>
+<b>Slots : </b><%= cn %> </br> </br>
+
+	<% @a.each do |m| %>
+		<tr>
+			<% eng = [] %>
+			<% lang = [] %>
+			<% elec = [] %>
+			<% core = [] %>	    
+	    	<% current_course = m.course.course_code %>
+	    
+	    	<% if current_course != previous_course then %>
+		   
+		    	<td> <b><%= m.course.course_code %>  </b></td> 
+
+		      	<% eng = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =1", params[:programme_name],params[:course_type] ,params[:sem],1,m.course_id) %>
+		      		
+		      		<% if eng.count > 0 then %>
+		      		<td> <% eng.each do |e| %>
+					<%= e.subject.subject_name %>&nbsp&nbsp&nbsp&nbsp
+					<% end %> </td>
+					<% cn -=1 %>
+					<% end %>
+
+		       	<% lang = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =2", params[:programme_name],params[:course_type] ,params[:sem],1,m.course_id) %> 
+						
+						<% if lang.count > 0 then %>		      
+						<td> <% lang.each do |l| %>
+						<%= l.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+						<% end %> </td> 
+						<% cn -=1 %>
+						<% end %>
+
+		       	
+		      	<% core = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =4", params[:programme_name],params[:course_type] ,params[:sem],1,m.course_id) %> 
+		    		
+		    		<% if core.count > 0 then %>
+			    	 <% core.each do |cr| %>
+					<td><%= cr.subject.subject_name %>&nbsp&nbsp&nbsp&nbsp</td><% cn -=1 %>
+					<% end %> <% end %>
+			  
+				
+				<% elec = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =3", params[:programme_name],params[:course_type] ,params[:sem],1,m.course_id) %> 
+		      
+		      		
+		      		<% if elec.count > 0 then %>
+		      		
+		      		<% while cn > 0 do %>
+		      		<td><% elec.each do |el| %>
+					<%= el.subject.subject_name %> &nbsp&nbsp&nbsp&nbsp
+					<% end %> </td><% cn -=1 %><% end %> <% end %>
+
+			  <% end %>
+				<% previous_course = current_course %>
+					
+		</tr>
+	<% end %>
+</table>
