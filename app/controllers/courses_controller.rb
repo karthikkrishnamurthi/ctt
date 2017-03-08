@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
   end
 
   def info
-     @items = Array[] 
+      
     # @p = Programme.find_by(name: params["pgm"])
     # create object based on 
     @programme_id = Association.distinct.count('programme_id')
@@ -27,8 +27,7 @@ class CoursesController < ApplicationController
     @semester_id = Association.distinct.count('semester_id')
     
 
-    @a = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ?", params[:programme_name],params[:course_type] ,params[:sem],1)
-    puts "A -------> #{@a[0]}"
+    
   end
   
 

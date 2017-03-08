@@ -8,18 +8,18 @@
 		<th><td>PLease Fill Input Details</td></th>
 		<tr><td>Enter Program Name: </td>
 			<td><select name="programme_name">
-				  <option value="1">Under Graduate Degree</option>
+				  <option value="1">UG</option>
 				  <option value="2">Integrated</option>
 				  <option value="3">Certificate</option>
 				  <option value="4">Internship</option>
-				  <option value="5">post Graduate Degree</option>
+				  <option value="5">PG</option>
 				  <option value="6">MPhil</option>
 				  <option value="7">PhD</option>
 				</
 				</select>
 			</td>
 		</tr>
-<tr><td>Enter Course Type: </td>
+<!-- <tr><td>Enter Course Type: </td>
 		<td><select name="course_type">
 				  <option value="1">BA</option>
 				  <option value="2">LLB</option>
@@ -37,24 +37,10 @@
 				</select></td>
   </td>
 		</tr>
-<tr><td>Enter Semester: </td>
-			<td><select name="sem">
-				  <option value="1">I</option>
-				  <option value="2">II</option>
-				  <option value="3">III</option>
-				  <option value="4">IV</option>
-				  <option value="5">V</option>
-				  <option value="6">VI</option>
-				  <option value="7">VII</option>
-				  <option value="8">VIII</option>
-				  <option value="9">IX</option>
-				  <option value="10">X</option>
-				</
-				</select></td>
-		</tr>
+
 <tr><td>Enter Subject Type: </td>
 			<td><input type="text" name="subject_type" value="Theory"></td>
-		</tr>
+		</tr> -->
 
 <tr><td>Enter End Date: </td>
 			<td><input type="date" name="endDate" min="2017-01-01"></td>
@@ -70,12 +56,6 @@
 </br>
 </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
 
-	<table>
-	<th><td>SUBJECT NAME</td></th>
-	<% @c.subjects.each do |i| %>
-		<tr><td><%= i.subject_name %></td></tr>
-	<% end %>
-	</table>
 
 </body>
 </html>
