@@ -1,3 +1,6 @@
+hii : <%= see = params[:animal] %> </br>
+
+
 <% course_count = Association.where("programme_id = ? and course_type_id != 0",params[:programme_name]).select("course_type_id").distinct %>
 <% @items = [] %>
 <% course_count.each do |cc| %>
@@ -71,188 +74,209 @@
 	 
 <% end %>
 
-
 <% d=Array[Date.strptime("2017-02-15", '%Y-%m-%d'),Date.strptime("2017-02-17", '%Y-%m-%d'),Date.strptime("2017-02-10", '%Y-%m-%d'),Date.strptime("2017-03-29", '%Y-%m-%d')] %>
 
 			</br></br></br><b>HoliDays:</b> <%= d  %></br></br></br></br>
 			<b>End Date: </b><%= @endDate=Date.strptime(params[:endDate], '%Y-%m-%d') %></br></br>
-<!-- <%= @maxSlots = @items.max %> --> 
+<%= @maxSlots = @items.max %> 
 <% @items.length %>
 <% course_count.each do |ccc| %>
-<% course_name = ccc.course_type.id %>
-<% sem_count = Association.where("programme_id = ? and course_type_id = ?",params[:programme_name],course_name).select("semester_id").distinct %>
-	<% sem_count.each do |z| %>
-	<% sem_name = z.semester.id %>
-	<% @a = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ?", params[:programme_name],course_name ,sem_name,1) %>
-			<% @endDate=Date.strptime(params[:endDate], '%Y-%m-%d') %>
-			<% arr=Array[] %>
+	<% course_name = ccc.course_type.id %>
+	<% sem_count = Association.where("programme_id = ? and course_type_id = ?",params[:programme_name],course_name).select("semester_id").distinct %>
+		<% sem_count.each do |z| %>
+		<% sem_name = z.semester.id %>
+		<% @a = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ?", params[:programme_name],course_name ,sem_name,1) %>
+				<% @endDate=Date.strptime(params[:endDate], '%Y-%m-%d') %>
+				<% arr=Array[] %>
 
 
-			</br>******************************************************************#####################**********************************************************************</br>
-			<!-- <h1> End Date:  <%= @endDate%></h1></br></br> -->
-			 </br></br></br></br><h1><%= @a[0].course_type.name %> - <%= z.semester.name %></h1> </br>
-			
-			<b>Slots/Max_Subjects : </b><%= @maxSlots %> </br>
-			<% i=0 %>
-			<% temp= @endDate %>
-			
-			<table border="1" >
-			<caption> <h1>Time Table</h1></caption>
-			<tr>
-			<td align="center"><b>Course Name</b></td>
-			<% begin %>
-				<% if d.include? temp %>
-				<% temp=temp - 1.day %>
-				<% next %>
+				</br>******************************************************************#####################**********************************************************************</br>
+				<!-- <h1> End Date:  <%= @endDate%></h1></br></br> -->
+				 </br></br></br></br><h1><%= @a[0].course_type.name %> - <%= z.semester.name %></h1>
+				 
+				
+				<b>Slots/Max_Subjects : </b><%= @maxSlots %> </br>
+				<% i=0 %>
+				<% temp= @endDate %>
+				
+				<table border="1" >
+				<caption> <h1>Time Table: 
+					<% if see.include? z.semester.id.to_s %>
+					 <b>AM </b>
+					 <% else %>
+					 <b>PM</b>
+					 <%end %></br></h1>
+				 </caption>
+				<tr>
+				<td align="center"><b>Course Name</b></td>
+				<% begin %>
+					<% if d.include? temp %>
+					<% temp=temp - 1.day %>
+					<% next %>
+					<% end %>
+					<% arr.push(temp) %>
+					<% temp = temp - 2.day %>
+					<% i +=1 %>
+				<% end while i < @maxSlots %>
+				<% arr.reverse.each do |j| %>
+				<td align="center"><b><%= j %></b></td>
 				<% end %>
-				<% arr.push(temp) %>
-				<% temp = temp - 2.day %>
-				<% i +=1 %>
-			<% end while i < @maxSlots %>
-			<% arr.reverse.each do |j| %>
-			<td align="center"><b><%= j %></b></td>
-			<% end %>
-			</br></br>
-			</tr>
+				</br></br>
+				</tr>
 
-			 <% previous_course = "" %>
-			
+				 <% previous_course = "" %>
+				
 
-			<% col = 0 %>
-			<% cn = @maxSlots %>
-			<% @a.each do |m| %>
-					<tr>
-						<% eng = [] %>
-						<% lang = [] %>
-						<% elec = [] %>
-						<% core = [] %>	    
-				    	<% current_course = m.course.course_code %>
-				    
-				    	<% if current_course != previous_course then %>
-					   
-					    	<td> <b><%= m.course.course_code %>  </b></td> 
+				<% col = 0 %>
+				<% cn = @maxSlots %>
+				<% @a.each do |m| %>
+						<tr>
+							<% eng = [] %>
+							<% lang = [] %>
+							<% elec = [] %>
+							<% core = [] %>	    
+					    	<% current_course = m.course.course_code %>
+					    
+					    	<% if current_course != previous_course then %>
+						   
+						    	<td> <b><%= m.course.course_code %>  </b></td> 
 
-					      	<% eng = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =1", params[:programme_name],course_name ,sem_name,1,m.course_id) %>
-					      		
-					      		<% if eng.count > 0 then %>
-					      		<td> <% eng.each do |e| %>
-								<%= e.subject.subject_code%> : <%= e.subject.subject_name %><br>
-								<% end %> </td>
-								<% cn -=1 %>
-								<% end %>
-
-					       	<% lang = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =2", params[:programme_name],course_name ,sem_name,1,m.course_id) %> 
-									
-									<% if lang.count > 0 then %>		      
-									<td> <% lang.each do |l| %>
-									<%= l.subject.subject_code%> : <%= l.subject.subject_name %><br>
-									<% end %> </td> 
+						      	<% eng = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =1", params[:programme_name],course_name ,sem_name,1,m.course_id) %>
+						      		
+						      		<% if eng.count > 0 then %>
+						      		<td><b>English </br></b> <% eng.each do |e| %>
+									<%= e.subject.subject_code%> : <%= e.subject.subject_name %><br>
+									<% end %> </td>
 									<% cn -=1 %>
 									<% end %>
 
-					       	
-					      	<% core = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =4", params[:programme_name],course_name,sem_name,1,m.course_id)  %> 
-					    
-					    		
-								<% core = core.sort_by do |sub| %>
-  								<%[ %>
-    								<% if sub.subject.subject_code.last(3).to_i == 0 %>
-      								<%	0 %>
-    								<% else %>
-      									<% 1 %>
-    								<% end, %>
-    								<% core %>
-  								<% ] %>
-								 <% end %>
+						       	<% lang = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =2", params[:programme_name],course_name ,sem_name,1,m.course_id) %> 
+										
+										<% if lang.count > 0 then %>		      
+										<td> <b>Language </br></b><% lang.each do |l| %>
+										<%= l.subject.subject_code%> : <%= l.subject.subject_name %><br>
+										<% end %> </td> 
+										<% cn -=1 %>
+										<% end %>
+
+						       	
+						      	<% core = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =4", params[:programme_name],course_name,sem_name,1,m.course_id)  %> 
+						    
+						    		
+									<% core = core.sort_by do |sub| %>
+	  								<%[ %>
+	    								<% if sub.subject.subject_code.last(3).to_i == 0 %>
+	      								<%	0 %>
+	    								<% else %>
+	      									<% 1 %>
+	    								<% end, %>
+	    								<% core %>
+	  								<% ] %>
+									 <% end %>
 
 
-					    		<% if core.count > 0 then %>
-						    	 <% core.each do |cr| %>
-								<td><%= cr.subject.subject_code%> : <%= cr.subject.subject_name %><br></td><% cn -=1 %>
-								<% end %>
-								 <% end %>
-						  
-							
-							<% elec = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =3", params[:programme_name],course_name ,sem_name,1,m.course_id) %> 
-					      
-					      		<% temp =[] %>
-					      		<% elec_c = 0 %>
+						    		<% if core.count > 0 then %>
+							    	 	<% core.each do |cr| %>
+											<td><b>Core </br></b><%= cr.subject.subject_code%> : <%= cr.subject.subject_name %><br></td><% cn -=1 %>
+										<% end %>
+									 <% end %>
+							  
+								
+								<% elec = Association.where("programme_id = ? and course_type_id = ? and semester_id = ? and subject_type_id = ? and course_id = ? and subject_category_id =3", params[:programme_name],course_name ,sem_name,1,m.course_id) %> 
+						      
 
-					      		<% if elec.count > 0  then %>
-									<% if elec[1].subject.subject_code.size == 6 then %>	
-										<% temp.push(elec[1].subject.subject_code.first(5))%>
 						      		
-							      		<td><b>Elective</b></br>
-							      				<% elec_c += 1 %>
-							      				<% elec.each do |el| %>
-													<% if !temp.include? el.subject.subject_code.first(5) then %>
-													
-														<td><b> Elective </br></b>
-														<% elec_c += 1 %>
-														<%= el.subject.subject_code%> : <%= el.subject.subject_name %><br> 
-														<% temp.push(el.subject.subject_code.first(5)) %>
-														<% next %></td>
-													<% end %> 
-													<%= el.subject.subject_code%> : <%= el.subject.subject_name %><br>	
-												<% end %>
-												</td><% cn -=1 %>
-									<% else if elec[1].subject.subject_code.size == 8 then %>
-													<% temp.push(elec[1].subject.subject_code.first(7))%>
+
+						      		<% temp =[] %>
+						      		<% elec_c = 0 %>
+
 						      		
-							     			 		<td><b>Elective</b></br>
-							     			 		<% elec_c += 1 %>
-							      					<% elec.each do |el| %>
-														<% if !temp.include? el.subject.subject_code.first(7) then %>
-													
+						      		<% if elec.count > 0  then %>
+										<% temp =[] %>
+										
+										
+										
+
+										<% if elec[1].subject.subject_code.size == 6 then %>	
+											<% temp.push(elec[1].subject.subject_code.first(5))%>
+							      		
+								      		<td><b>Elective</b></br>
+								      				<% elec_c += 1 %>
+								      				<% elec.each do |el| %>
+														<% if !temp.include? el.subject.subject_code.first(5) then %>
+														
 															<td><b> Elective </br></b>
 															<% elec_c += 1 %>
 															<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br> 
-															<% temp.push(el.subject.subject_code.first(7)) %>
+															<% temp.push(el.subject.subject_code.first(5)) %>
 															<% next %></td>
 														<% end %> 
 														<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br>	
 													<% end %>
 													</td><% cn -=1 %>
-									<% else if elec[1].subject.subject_code.size == 7 then %>
-													<% temp.push(elec[1].subject.subject_code.first(6))%>
-						      		
-							     			 		<td><b>Elective</b></br>
-							     			 		<% elec_c += 1 %>
-							      					<% elec.each do |el| %>
-														<% if !temp.include? el.subject.subject_code.first(6) then %>
-													
-															<td><b> Elective </br></b>
-															<% elec_c += 1 %>
-															<%= el.subject.subject_code%> : <%= el.subject.subject_name %><br> 
-															<% temp.push(el.subject.subject_code.first(6)) %>
-															<% next %></td>
-														<% end %> 
-														<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br>	
-													<% end %>
-													</td><% cn -=1 %>					
+										<% elsif elec[1].subject.subject_code.size == 7 then %>
+														<% temp =[] %>
+														<% temp.push(elec[1].subject.subject_code.first(6)) %>
+							      		
+								     			 		<td><b>Elective</b></br>
+								     			 		<% elec_c += 1 %>
+								      					<% elec.each do |el| %>
+															<% if !temp.include? el.subject.subject_code.first(6) then %>
+														
+																<td><b> Elective </br></b>
+																<% elec_c += 1 %>
+																<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br> 
+																<% temp.push(el.subject.subject_code.first(6)) %>
+																<% next %></td>
+															<% end %> 
+															<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br>	
+														<% end %>
+														</td><% cn -=1 %>
+														
+										
+
+										<% elsif elec[1].subject.subject_code.size == 8 then %>
+														<% temp =[] %>
+														<% temp.push(elec[1].subject.subject_code.first(7))%>
+							      		
+								     			 		<td><b>Elective</b></br>
+								     			 		<% elec_c += 1 %>
+								      					<% elec.each do |el| %>
+															<% if !temp.include? el.subject.subject_code.first(7) then %>
+														
+																<td><b> Elective </br></b>
+																<% elec_c += 1 %>
+																<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br> 
+																<% temp.push(el.subject.subject_code.first(7)) %>
+																<% next %></td>
+															<% end %> 
+															<%= el.subject.subject_code %> : <%= el.subject.subject_name %><br>	
+														<% end %>
+														</td><% cn -=1 %>
+														
 
 										<% else %>
-											<td>
-											<% elec_c += 1 %>
-											<% elec.each do |el| %>
-											 <%= el.subject.subject_code %> :<%= el.subject.subject_name %></br> 
-											<% end %></td>
+												<td>
+												<% elec_c += 1 %>
+												<% elec.each do |el| %>
+												 <%= el.subject.subject_code %> :<%= el.subject.subject_name %></br> 
+												<% end %></td>
 										<% end %>		
 									<% end %>		
-									<% end %>
+									
 								<% end %>
-								<!-- <td>elec _c = <%= elec_c %></td> -->
-
-
-						 <% end %>
-
-							<% previous_course = current_course %>
-
 								
-					</tr>
-				<% end %>
+									<!-- <td>elec _c = <%= elec_c %></td> -->
 
-	</table>
+							 
+
+								<% previous_course = current_course %>
+
+									
+						</tr>
+					<% end %>
+
+		</table>
 	<% end %>
 <% end %>
 </br></br>
